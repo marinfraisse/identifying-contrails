@@ -12,6 +12,7 @@ band_choice = ['band_11.npy','band_14.npy','band_15.npy']
 target_suffix = 'human_pixel_masks.npy'
 N_TIMES_BEFORE = 4
 
+DATASET_SAMPLE_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","dataset_sample")
 
 
 
