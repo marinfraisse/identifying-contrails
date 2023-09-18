@@ -30,7 +30,7 @@ from idcontrails.params import *
 from idcontrails.ml_logic.building_models import build_unet_model
 from idcontrails.ml_logic.metrics import dice_metric, dice_loss, binary_crossentropy
 
-
+from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrails
 
 
 # creating model architecture
@@ -64,6 +64,4 @@ if RELOAD_MODEL :
     print('-')
     print('-')
 
-
-if RELOAD_TEST_SAMPLES :
-    pass
+contrail_record_ids = create_list_samples_with_contrails()
