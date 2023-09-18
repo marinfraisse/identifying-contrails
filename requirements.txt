@@ -10,3 +10,5 @@ scikit-learn
 ipynb
 jupyter
 tensorflow
+kaggle
+gc
