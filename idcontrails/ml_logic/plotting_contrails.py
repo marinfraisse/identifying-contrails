@@ -1,13 +1,19 @@
 # Choosing a random image from sampling set and defining the corresponding true mask and predicted mask
 import random
+import tensorflow as tf
+import numpy as np
+import os
+from idcontrails.params import *
+import matplotlib.pyplot as plt
+
 
 def normalize_range(data, bounds):
     """Maps data to the range [0, 1]."""
     return (data - bounds[0]) / (bounds[1] - bounds[0])
 
-def load_random_image_and_mask():
+def load_random_image_and_mask(model):
 
-    dataset_sample_path = '/marinfraisse/identifying_contrails/dataset_sample'
+    dataset_sample_path = DATASET_SAMPLE_PATH
 
     # Choosing a random image from validation set
 
@@ -42,14 +48,14 @@ def load_random_image_and_mask():
     input_image_model = tf.expand_dims(input_image, 0)
 
     # Use the model to predict a mask on the input image
-    predicted_mask = unet_model.predict(input_image_model)
+    predicted_mask = model.predict(input_image_model)
 
     # Removing the additional dimension to plot the image
     predicted_mask_image = predicted_mask[0,:,:,:]
 
     return input_image, output_mask, predicted_mask_image
 
-def plot_results():
+def plot_results(input_image, output_mask, predicted_mask_image):
 
     # plotting the results on a graph
     plt.figure(figsize=(18, 6))
