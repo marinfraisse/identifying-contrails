@@ -1,2 +1,6 @@
 raw_data/
 Notebooks/
+idcontrails/tf_checkpoints/
+idcontrails/ml_logic/__pycache__/
+idcontrails/__pycache__/
+model_checkpoints/
