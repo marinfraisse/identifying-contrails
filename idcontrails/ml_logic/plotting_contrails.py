@@ -11,14 +11,14 @@ def normalize_range(data, bounds):
     """Maps data to the range [0, 1]."""
     return (data - bounds[0]) / (bounds[1] - bounds[0])
 
-def load_random_image_and_mask(model):
+def load_random_image_and_mask(model, index):
 
     dataset_sample_path = DATASET_SAMPLE_PATH
 
     # Choosing a random image from validation set
 
     record_list = os.listdir(dataset_sample_path)
-    record_id = random.sample(record_list, 1)[0]
+    record_id = record_list[index]
 
     # loading 3 bands required for normalization and the mask
     with open(os.path.join(dataset_sample_path, record_id, 'band_11.npy'), 'rb') as f:

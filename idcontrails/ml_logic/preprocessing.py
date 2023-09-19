@@ -101,3 +101,29 @@ def plot_history(history, title='', axs=None, exp_name=""):
     ax2.set_title('Dice metric')
     ax2.legend()
     return (ax1, ax2)
+
+
+def loading_single_array(index=0) :
+    dataset_sample_path = DATASET_SAMPLE_PATH
+    record_list = os.listdir(dataset_sample_path)
+    record_id = record_list[index]
+
+    # loading 3 bands required for normalization and the mask
+    with open(os.path.join(dataset_sample_path, record_id, 'band_11.npy'), 'rb') as f:
+        band11 = np.load(f)
+    with open(os.path.join(dataset_sample_path, record_id, 'band_14.npy'), 'rb') as f:
+        band14 = np.load(f)
+    with open(os.path.join(dataset_sample_path, record_id, 'band_15.npy'), 'rb') as f:
+        band15 = np.load(f)
+    with open(os.path.join(dataset_sample_path, record_id, 'human_pixel_masks.npy'), 'rb') as f:
+        output_mask = np.load(f)
+
+    # normalizing the selected image to plot it in RGB ash
+    _T11_BOUNDS = (243, 303)
+    _CLOUD_TOP_TDIFF_BOUNDS = (-4, 5)
+    _TDIFF_BOUNDS = (-4, 2)
+
+    r = normalize_range(band15 - band14, _TDIFF_BOUNDS)
+    g = normalize_range(band14 - band11, _CLOUD_TOP_TDIFF_BOUNDS)
+    b = normalize_range(band14, _T11_BOUNDS)
+    return np.clip(np.stack([r, g, b], axis=2), 0, 1)[...,4]

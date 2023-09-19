@@ -1,12 +1,12 @@
 import os
 
-RELOAD_MODEL = False
+RELOAD_MODEL = True
+TEST_PLOT = False
+TEST_API = True
 TF_CHECKPOINT_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","idcontrails","tf_checkpoints","tf_checkpoint" )
 
 # TEST_SAMPLES_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","tf_checkpoints" )
 
-RELOAD_TEST_SAMPLES = True
-NUMBER_OF_TEST_SAMPLES = 5
 
 band_choice = ['band_11.npy','band_14.npy','band_15.npy']
 target_suffix = 'human_pixel_masks.npy'
@@ -14,12 +14,10 @@ N_TIMES_BEFORE = 4
 
 DATASET_SAMPLE_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","dataset_sample")
 
+FIG_SAVES_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","plot_png_tests")
 
 
 # ===================== WIP =================================
-
-
-
 
 
 #getting the dataset directory

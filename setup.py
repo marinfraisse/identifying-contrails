@@ -5,6 +5,8 @@ with open("requirements.txt") as f:
     content = f.readlines()
 requirements = [x.strip() for x in content if "git+" not in x]
 
+
+
 setup(name='identifying-contrails',
       version="0.0.1",
       description="Identifying-contrails Model (chunk_training)",
