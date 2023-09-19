@@ -24,44 +24,51 @@ from tensorflow.keras.models import Sequential
 # Garbage collect for generator
 import gc
 import random
-
+import requests
+import json
 #import parameters
 from idcontrails.params import *
-from idcontrails.ml_logic.building_models import build_unet_model
+from idcontrails.ml_logic.building_models import load_model
 from idcontrails.ml_logic.metrics import dice_metric, dice_loss, binary_crossentropy
 
-from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrails
+from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrails, loading_single_array
+from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, plot_results
 
+url = 'http://127.0.0.1:8000'
 
 # creating model architecture
 if RELOAD_MODEL :
-    print('-')
-    print('-')
-    print('-')
-    print('reloading model with latest manually added checkpoint')
-    input_layer = layers.Input((IMG_SIZE_TARGET, IMG_SIZE_TARGET, NUMBER_CHANNELS_TARGET))
-    output_layer = build_unet_model(input_layer, START_NEURONS, DROPOUT_RATIO)
+    model = load_model()
 
-    # U-Net model with Functional API from Keras
-    model = tf.keras.Model(input_layer, output_layer, name=MODEL_NAME)
-    optimizer = tf.keras.optimizers.Adam(learning_rate=MAX_LR, beta_1=BETA_1, beta_2=BETA_2, epsilon=EPSILON)
+if TEST_PLOT :
+    for index in range(len(os.listdir(DATASET_SAMPLE_PATH)) ) :
+        input_image, output_mask, predicted_mask_image = load_random_image_and_mask(model, index)
+        nom = f'coucou{index}.png'
+
+        fig = plot_results(input_image, output_mask, predicted_mask_image )
+        # plt.savefig('coucou.png')
+        plt.savefig(os.path.join(FIG_SAVES_PATH, nom ))
+        print(nom + ' successfully saved')
+
+
+if TEST_API :
+    X = loading_single_array(index=0)
+    print(X)
+    print(X.shape)
+    X_test = X.tobytes()
+    result = requests.post(url + "/upload_image/", files= {"img" : X_test} )
+    print(result.status_code)
+
+
+    X_mask_pred = np.frombuffer(result.content, dtype = np.float32).reshape(256,256,1)
+    print(X_mask_pred.sum())
 
 
 
-    # unet_model.compile(optimizer=optimizer,
-    #                    loss=dice_loss,  # Use the specified loss function
-    #                    metrics=[dice_metric, dice_loss, binary_crossentropy])  # Add appropriate metrics
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=MAX_LR, beta_1=BETA_1, beta_2=BETA_2, epsilon=EPSILON)
 
-    model.compile(optimizer=optimizer,
-                    loss=dice_loss,  # Use the specified loss function
-                    metrics=[dice_metric, dice_loss, binary_crossentropy])  # Add appropriate metrics
 
-    model.load_weights(TF_CHECKPOINT_PATH).expect_partial()
-    print("weights successfully loaded !" )
-    print('-')
-    print('-')
-    print('-')
 
-contrail_record_ids = create_list_samples_with_contrails()
+
+
+#

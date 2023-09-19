@@ -3,6 +3,36 @@ import numpy as np
 from idcontrails.params import *
 import matplotlib.pyplot as plt
 
+def create_list_samples_with_contrails():
+
+    target_suffix = 'human_pixel_masks.npy'
+
+    # Building list of record_ids
+    record_ids = os.listdir(DATASET_SAMPLE_PATH)
+    len_dataset = len(record_ids)
+    print(f'The sample contains {len_dataset} observations.')
+
+
+    # Keeping only observations that contains contrails
+    contrail_record_ids = []
+    len(contrail_record_ids)
+    for record_id in record_ids:
+        # Building target paths
+        target_path = os.path.join(DATASET_SAMPLE_PATH, record_id, target_suffix)
+        target = np.load(open(target_path, 'rb'))
+
+        # Jumping over observations with no contrails
+        if target.sum()==0:
+            continue
+        else:
+            contrail_record_ids.append(record_id)
+    print('-')
+    print('-')
+    print('-')
+    print(f'The sample dataset contains {len(contrail_record_ids)} observations with contrails in them.')
+    return contrail_record_ids
+
+contrail_record_ids = create_list_samples_with_contrails()
 
 list_chuncks = []
 chunck_names = []
@@ -73,31 +103,27 @@ def plot_history(history, title='', axs=None, exp_name=""):
     return (ax1, ax2)
 
 
-def create_list_samples_with_contrails():
+def loading_single_array(index=0) :
+    dataset_sample_path = DATASET_SAMPLE_PATH
+    record_list = os.listdir(dataset_sample_path)
+    record_id = record_list[index]
 
-    target_suffix = 'human_pixel_masks.npy'
+    # loading 3 bands required for normalization and the mask
+    with open(os.path.join(dataset_sample_path, record_id, 'band_11.npy'), 'rb') as f:
+        band11 = np.load(f)
+    with open(os.path.join(dataset_sample_path, record_id, 'band_14.npy'), 'rb') as f:
+        band14 = np.load(f)
+    with open(os.path.join(dataset_sample_path, record_id, 'band_15.npy'), 'rb') as f:
+        band15 = np.load(f)
+    with open(os.path.join(dataset_sample_path, record_id, 'human_pixel_masks.npy'), 'rb') as f:
+        output_mask = np.load(f)
 
-    # Building list of record_ids
-    record_ids = os.listdir(DATASET_SAMPLE_PATH)
-    len_dataset = len(record_ids)
-    print(f'The sample contains {len_dataset} observations.')
+    # normalizing the selected image to plot it in RGB ash
+    _T11_BOUNDS = (243, 303)
+    _CLOUD_TOP_TDIFF_BOUNDS = (-4, 5)
+    _TDIFF_BOUNDS = (-4, 2)
 
-
-    # Keeping only observations that contains contrails
-    contrail_record_ids = []
-    len(contrail_record_ids)
-    for record_id in record_ids:
-        # Building target paths
-        target_path = os.path.join(DATASET_SAMPLE_PATH, record_id, target_suffix)
-        target = np.load(open(target_path, 'rb'))
-
-        # Jumping over observations with no contrails
-        if target.sum()==0:
-            continue
-        else:
-            contrail_record_ids.append(record_id)
-    print('-')
-    print('-')
-    print('-')
-    print(f'The sample dataset contains {len(contrail_record_ids)} observations with contrails in them.')
-    return contrail_record_ids
+    r = normalize_range(band15 - band14, _TDIFF_BOUNDS)
+    g = normalize_range(band14 - band11, _CLOUD_TOP_TDIFF_BOUNDS)
+    b = normalize_range(band14, _T11_BOUNDS)
+    return np.clip(np.stack([r, g, b], axis=2), 0, 1)[...,4]

@@ -11,14 +11,14 @@ def normalize_range(data, bounds):
     """Maps data to the range [0, 1]."""
     return (data - bounds[0]) / (bounds[1] - bounds[0])
 
-def load_random_image_and_mask(model):
+def load_random_image_and_mask(model, index):
 
     dataset_sample_path = DATASET_SAMPLE_PATH
 
     # Choosing a random image from validation set
 
     record_list = os.listdir(dataset_sample_path)
-    record_id = random.sample(record_list, 1)[0]
+    record_id = record_list[index]
 
     # loading 3 bands required for normalization and the mask
     with open(os.path.join(dataset_sample_path, record_id, 'band_11.npy'), 'rb') as f:
@@ -72,7 +72,6 @@ def plot_results(input_image, output_mask, predicted_mask_image):
     ax.imshow(output_mask, cmap='Reds', alpha=.4, interpolation='none')
     ax.set_title('Contrail mask on input image')
 
-    plt.figure(figsize=(18, 6))
     ax = plt.subplot(2, 3, 4)
     ax.imshow(input_image)
     ax.set_title('Input image')
@@ -84,6 +83,7 @@ def plot_results(input_image, output_mask, predicted_mask_image):
     ax = plt.subplot(2, 3, 6)
     ax.imshow(input_image)
     ax.imshow(predicted_mask_image, cmap='Reds', alpha=.4, interpolation='none')
-    ax.set_title('Predicted contrail mask on input image');
-
-    return None
+    ax.set_title('Predicted contrail mask on input image')
+    plt.show()
+    fig = plt.gcf()
+    return fig

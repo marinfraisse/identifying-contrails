@@ -28,6 +28,9 @@ import random
 #import parameters
 from idcontrails.params import *
 
+from idcontrails.ml_logic.metrics import dice_metric, dice_loss, binary_crossentropy
+
+
 def build_unet_model(input_layer, start_neurons, drop_out_factor):
     # Downsampling path / Decoder
     conv1 = layers.Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(input_layer)
@@ -82,3 +85,26 @@ def build_unet_model(input_layer, start_neurons, drop_out_factor):
     output_layer = layers.Conv2D(1, (1, 1), padding="same", activation="sigmoid")(uconv1)
 
     return output_layer
+
+def load_model() :
+    print('-')
+    print('-')
+    print('-')
+    print('reloading model with latest manually added checkpoint')
+    input_layer = layers.Input((IMG_SIZE_TARGET, IMG_SIZE_TARGET, NUMBER_CHANNELS_TARGET))
+    output_layer = build_unet_model(input_layer, START_NEURONS, DROPOUT_RATIO)
+
+    # U-Net model with Functional API from Keras
+    model = tf.keras.Model(input_layer, output_layer, name=MODEL_NAME)
+    optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=MAX_LR, beta_1=BETA_1, beta_2=BETA_2, epsilon=EPSILON)
+
+    model.compile(optimizer=optimizer,
+                    loss=dice_loss,  # Use the specified loss function
+                    metrics=[dice_metric, dice_loss, binary_crossentropy])  # Add appropriate metrics
+
+    model.load_weights(TF_CHECKPOINT_PATH).expect_partial()
+    print("weights successfully loaded !" )
+    print('-')
+    print('-')
+    print('-')
+    return model
