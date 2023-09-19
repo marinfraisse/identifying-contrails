@@ -75,6 +75,9 @@ st.write("")
 st.write("Here is a sample of what the training material looks like:")
 st.markdown("***")
 
+
+# Creating the image dataset from local images
+
 # Creating a figure and subplot space for the gallery
 # Could add a plotly dynamic visualization by adjusting the number of bands from 1 to 3
 
