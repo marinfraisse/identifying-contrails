@@ -72,7 +72,6 @@ def plot_results(input_image, output_mask, predicted_mask_image):
     ax.imshow(output_mask, cmap='Reds', alpha=.4, interpolation='none')
     ax.set_title('Contrail mask on input image')
 
-    plt.figure(figsize=(18, 6))
     ax = plt.subplot(2, 3, 4)
     ax.imshow(input_image)
     ax.set_title('Input image')
@@ -84,6 +83,7 @@ def plot_results(input_image, output_mask, predicted_mask_image):
     ax = plt.subplot(2, 3, 6)
     ax.imshow(input_image)
     ax.imshow(predicted_mask_image, cmap='Reds', alpha=.4, interpolation='none')
-    ax.set_title('Predicted contrail mask on input image');
-
-    return None
+    ax.set_title('Predicted contrail mask on input image')
+    plt.show()
+    fig = plt.gcf()
+    return fig
