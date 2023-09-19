@@ -3,6 +3,36 @@ import numpy as np
 from idcontrails.params import *
 import matplotlib.pyplot as plt
 
+def create_list_samples_with_contrails():
+
+    target_suffix = 'human_pixel_masks.npy'
+
+    # Building list of record_ids
+    record_ids = os.listdir(DATASET_SAMPLE_PATH)
+    len_dataset = len(record_ids)
+    print(f'The sample contains {len_dataset} observations.')
+
+
+    # Keeping only observations that contains contrails
+    contrail_record_ids = []
+    len(contrail_record_ids)
+    for record_id in record_ids:
+        # Building target paths
+        target_path = os.path.join(DATASET_SAMPLE_PATH, record_id, target_suffix)
+        target = np.load(open(target_path, 'rb'))
+
+        # Jumping over observations with no contrails
+        if target.sum()==0:
+            continue
+        else:
+            contrail_record_ids.append(record_id)
+    print('-')
+    print('-')
+    print('-')
+    print(f'The sample dataset contains {len(contrail_record_ids)} observations with contrails in them.')
+    return contrail_record_ids
+
+contrail_record_ids = create_list_samples_with_contrails()
 
 list_chuncks = []
 chunck_names = []
@@ -71,33 +101,3 @@ def plot_history(history, title='', axs=None, exp_name=""):
     ax2.set_title('Dice metric')
     ax2.legend()
     return (ax1, ax2)
-
-
-def create_list_samples_with_contrails():
-
-    target_suffix = 'human_pixel_masks.npy'
-
-    # Building list of record_ids
-    record_ids = os.listdir(DATASET_SAMPLE_PATH)
-    len_dataset = len(record_ids)
-    print(f'The sample contains {len_dataset} observations.')
-
-
-    # Keeping only observations that contains contrails
-    contrail_record_ids = []
-    len(contrail_record_ids)
-    for record_id in record_ids:
-        # Building target paths
-        target_path = os.path.join(DATASET_SAMPLE_PATH, record_id, target_suffix)
-        target = np.load(open(target_path, 'rb'))
-
-        # Jumping over observations with no contrails
-        if target.sum()==0:
-            continue
-        else:
-            contrail_record_ids.append(record_id)
-    print('-')
-    print('-')
-    print('-')
-    print(f'The sample dataset contains {len(contrail_record_ids)} observations with contrails in them.')
-    return contrail_record_ids

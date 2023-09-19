@@ -12,3 +12,4 @@ jupyter
 tensorflow
 kaggle
 gc
+fastapi

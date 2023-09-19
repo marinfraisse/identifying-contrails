@@ -31,6 +31,7 @@ from idcontrails.ml_logic.building_models import build_unet_model
 from idcontrails.ml_logic.metrics import dice_metric, dice_loss, binary_crossentropy
 
 from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrails
+from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, plot_results
 
 
 # creating model architecture
@@ -64,4 +65,10 @@ if RELOAD_MODEL :
     print('-')
     print('-')
 
-contrail_record_ids = create_list_samples_with_contrails()
+
+input_image, output_mask, predicted_mask_image = load_random_image_and_mask(model)
+
+fig = plot_results(input_image, output_mask, predicted_mask_image )
+
+
+plt.savefig('coucou3.png')

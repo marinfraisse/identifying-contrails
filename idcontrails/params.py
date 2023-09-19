@@ -1,6 +1,6 @@
 import os
 
-RELOAD_MODEL = True
+RELOAD_MODEL = False
 TF_CHECKPOINT_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","idcontrails","tf_checkpoints","tf_checkpoint" )
 
 # TEST_SAMPLES_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","tf_checkpoints" )
