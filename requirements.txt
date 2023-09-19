@@ -13,3 +13,9 @@ tensorflow
 kaggle
 gc
 fastapi
+uvicorn
+typing
+python-multipart
+requests
+opencv-python
+PIL
