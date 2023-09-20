@@ -5,6 +5,10 @@ import numpy as np
 import os
 from idcontrails.params import *
 import matplotlib.pyplot as plt
+import streamlit as st
+import plotly.express as px
+import plotly.graph_objects as go
+import cv2
 
 
 def normalize_range(data, bounds):
@@ -87,3 +91,71 @@ def plot_results(input_image, output_mask, predicted_mask_image):
     plt.show()
     fig = plt.gcf()
     return fig
+
+
+def plot_results_streamlit(input_image, y_true_image, y_pred_image):
+
+    # Preparing the superpositioned masks
+
+    # Building the layout with 3 columns
+    col_1, col_2,col_3 = st.columns(3)
+
+    # Displaying images in each column
+    with col_1:
+        fig_1 = px.imshow(input_image)
+        fig_1.update_layout(width=300, height=300)
+        st.text(f'Original image')
+        st.plotly_chart(fig_1, width=300, height=300)
+        st.markdown("***")
+        fig_2 = px.imshow(input_image)
+        fig_2.update_layout(width=300, height=300)
+        st.text(f'Original image')
+        st.plotly_chart(fig_1, width=300, height=300)
+
+    with col_2:
+        fig_3 = px.imshow(y_true_image)
+        fig_3.update_layout(width=300, height=300)
+        st.text(f'Original contrail mask')
+        st.plotly_chart(fig_3, width=300, height=300)
+        st.markdown("***")
+        fig_4 = px.imshow(y_pred_image)
+        fig_4.update_layout(width=300, height=300)
+        st.text(f'Tour prediction mask')
+        st.plotly_chart(fig_4, width=300, height=300)
+
+    with col_3:
+        st.text(f'Original superposition')
+        fig_5 = px.imshow(input_image)
+        fig_5.add_trace(go.Contour(z=input_image, showscale=False,
+                         contours=dict(start=0, end=70, size=70, coloring='lines'),
+                         line_width=2))
+        # plt.figure(figsize=(18, 6))
+        # ax = plt.subplot(2, 1, 1)
+        # ax.imshow(input_image)
+        # ax.imshow(y_true_image, cmap='Reds', alpha=.4, interpolation='none')
+        # fig = plt.show()
+        st.markdown("***")
+        # st.write(fig)
+        st.plotly_chart(fig_5, width=300, height=300)
+        # st.plotly_chart(fig, width=300, height=300)
+
+
+
+
+
+
+
+
+
+        # y_true_image=y_true_image.astype(np.uint8)
+        # input_image=input_image.astype(np.uint8)
+        # fig_5 = cv2.bitwise_and(input_image, input_image, mask=y_true_image)
+        # #f1 = px.imshow(cv2.imshow(fig_5))
+        # st.text(f'Original superposition')
+        # #st.plotly_chart(f1, width=400, height=400)
+        # st.image(fig_5)
+        # st.markdown("***")
+        # # fig_6a = px.imshow(input_image)
+        # # fig_6b = px.imshow(y_pred_image)
+        # # st.text(f'Original superposition')
+        # # st.plotly_chart(fig_6a, fig_6b, width=400, height=400)
