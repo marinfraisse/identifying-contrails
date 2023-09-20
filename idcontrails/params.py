@@ -3,7 +3,7 @@ import os
 RELOAD_MODEL = True
 TEST_PLOT = False
 TEST_API = True
-TF_CHECKPOINT_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","idcontrails","tf_checkpoints","tf_checkpoint" )
+TF_CHECKPOINT_PATH = os.path.join(os.path.dirname(__file__), "tf_checkpoints","tf_checkpoint" )
 
 # TEST_SAMPLES_PATH = os.path.join(os.path.expanduser('~'), "code", "marinfraisse", "identifying-contrails","tf_checkpoints" )
 

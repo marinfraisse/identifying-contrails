@@ -6,7 +6,6 @@ import csv
 
 # Data analysis and manipulation
 import numpy as np
-import pandas as pd
 
 # # Data visualization
 # from matplotlib import animation

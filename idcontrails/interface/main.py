@@ -35,6 +35,7 @@ from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrail
 from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, plot_results
 
 url = 'http://127.0.0.1:8000'
+url2 = 'http://127.0.0.1:8080'
 
 # creating model architecture
 if RELOAD_MODEL :
@@ -56,7 +57,7 @@ if TEST_API :
     print(X)
     print(X.shape)
     X_test = X.tobytes()
-    result = requests.post(url + "/upload_image/", files= {"img" : X_test} )
+    result = requests.post(url2 + "/upload_image/", files= {"img" : X_test} )
     print(result.status_code)
 
 
