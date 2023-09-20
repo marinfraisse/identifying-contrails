@@ -1,31 +1,31 @@
 # imports
 import os
-import random
-import datetime
-import csv
+# import random
+# import datetime
+# import csv
 
 # Data analysis and manipulation
 import numpy as np
-import pandas as pd
+# import pandas as pd
 
 # Data visualization
-from matplotlib import animation
+# from matplotlib import animation
 import matplotlib.pyplot as plt
-from IPython import display
-import seaborn as sns
+# from IPython import display
+# import seaborn as sns
 # import plotly
 
 # ML, DL & Modelling
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers, callbacks
-from tensorflow.keras.models import Sequential
+# from tensorflow.keras import layers, callbacks
+# from tensorflow.keras.models import Sequential
 
 # Garbage collect for generator
-import gc
-import random
+# import gc
+# import random
 import requests
-import json
+# import json
 #import parameters
 from idcontrails.params import *
 from idcontrails.ml_logic.building_models import load_model
@@ -35,6 +35,7 @@ from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrail
 from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, plot_results
 
 url = 'http://127.0.0.1:8000'
+url2 = 'http://127.0.0.1:8080'
 
 # creating model architecture
 if RELOAD_MODEL :
@@ -56,7 +57,7 @@ if TEST_API :
     print(X)
     print(X.shape)
     X_test = X.tobytes()
-    result = requests.post(url + "/upload_image/", files= {"img" : X_test} )
+    result = requests.post(url2 + "/upload_image/", files= {"img" : X_test} )
     print(result.status_code)
 
 
