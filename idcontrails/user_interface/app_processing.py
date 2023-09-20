@@ -18,7 +18,7 @@ def normalize_range(data, bounds):
 
 
 def build_dataset():
-    data_sample_path = '/home/nberretti/code/marinfraisse/identifying-contrails/dataset_sample'
+    data_sample_path = os.path.join(os.path.dirname(__file__), "../" , "dataset_sample" )
     record_ids = os.listdir(data_sample_path)
     print(record_ids)
 
