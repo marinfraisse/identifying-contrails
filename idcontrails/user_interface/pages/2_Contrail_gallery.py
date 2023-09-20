@@ -3,7 +3,7 @@ import os
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-from idcontrails.user_interface.temporary_plot import *
+from idcontrails.user_interface.app_processing import *
 
 # Creating the absolute path for assets
 absolute_path_root = '/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/app_assets'
@@ -43,7 +43,7 @@ with col_a:
         fig.update_layout(width=400, height=400)
         st.text(f'Contrail example {i+1}')
         st.plotly_chart(fig, width=400, height=400)
-        # st.markdown('***')
+
 
 with col_b:
     for i in range(1, 20, 2): # Keeping only even numbers
@@ -53,7 +53,7 @@ with col_b:
         fig.update_layout(width=400, height=400)
         st.text(f'Contrail example {i+1}')
         st.plotly_chart(fig, width=400, height=400)
-        # st.markdown('***')
+
 
 st.markdown('***')
 st.write("📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹📷📹")

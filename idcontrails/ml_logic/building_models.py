@@ -21,7 +21,7 @@ from tensorflow import keras
 # from tensorflow.keras.models import Sequential
 
 # Garbage collect for generator
-import gc
+# import gc
 import random
 
 #import parameters
