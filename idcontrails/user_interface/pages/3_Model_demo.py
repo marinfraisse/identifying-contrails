@@ -2,6 +2,8 @@
 import os
 import streamlit as st
 import matplotlib.pyplot as plt
+from matplotlib import animation
+from IPython import display
 import plotly.express as px
 import requests
 import tempfile
@@ -83,11 +85,6 @@ if 'prediction_start' not in st.session_state:
 if 'display_result' not in st.session_state:
     st.session_state['display_result'] = "Nothing"
 
-st.write(st.session_state['start_of_choice'])
-st.write(st.session_state['choice_of_bet'])
-st.write(st.session_state['bet_amount'])
-st.write(st.session_state['amout_of_bet'])
-
 st.markdown("***")
 
 st.write("Shall we go then?")
@@ -106,7 +103,7 @@ if st.session_state['start_of_choice'] == "Go!":
         bet_amount = st.select_slider("Place your bet - We're talking € here:", list(range(1,101)))
         st.session_state['amout_of_bet'] = bet_amount
 
-        # Sequence if user chose to bet
+        ############## Sequence if user chose  to bet ###############
         if bet_amount != 1:
             # To be re-used as is in the bet negative
             # Loading the data from the local files
@@ -115,13 +112,12 @@ if st.session_state['start_of_choice'] == "Go!":
             uploaded_files = st.file_uploader("Choose input images",
                                     type = ['npy'],
                                     accept_multiple_files=True)
-            # st.write(len(uploaded_files))
-            # st.write(uploaded_files[0])
+
 
             # // Ideally wrap in a function somewhere
             # Retrieving only the 3 bands we want and the true mask
             if uploaded_files:
-                st.write("✅ Files loaded")
+                st.success("✅ Files loaded")
 
                 for uploaded_file in uploaded_files:
                     if uploaded_file.name == "band_11.npy":
@@ -151,8 +147,6 @@ if st.session_state['start_of_choice'] == "Go!":
 
                 # Choosing only the 5th sequence to plot the image
                 input_image = image_full_sequences[..., N_TIMES_BEFORE]
-                st.write(f'input image shpe is: {input_image.shape}')
-                st.write(f'y_true shpe is: {y_true.shape}')
 
                 # Artificially adding 1 dimension to feed to the model
                 X_pred = tf.expand_dims(input_image, 0)
@@ -167,6 +161,7 @@ if st.session_state['start_of_choice'] == "Go!":
                 st.plotly_chart(fig, use_container_width=True)
 
 
+
                 # Button to go to the next_step
                 st.write("🤖:")
                 st.text("Should I have a go at it now?")
@@ -175,23 +170,28 @@ if st.session_state['start_of_choice'] == "Go!":
 
                 if st.session_state['prediction_start'] == "Predict!":
                     st.markdown("***")
-                    # Model call API
-                    # Use a rolling thing to explain it is turning
-                    # Use a check when y_pred exists
+                    with st.spinner('Prediction ongoing...'):
+                        # Model call API
+                        # Use a rolling thing to explain it is turning
+                        # Use a check when y_pred exists
 
-                    # Calling the model to launch a prediction
-                    # url = 'https://www.marinsetraine.com/stagiaire'
-                    # params = {}
-                    # model = requests.get(url, params=params)
+                        # Calling the model to launch a prediction
+                        # url = 'https://www.marinsetraine.com/stagiaire'
+                        # params = {}
+                        # model = requests.get(url, params=params)
 
-                    # y_pred = model.predict(X_pred)
-                    st.write("Placeholder for model call")
-                    y_pred = y_true # To be updated
+                        # y_pred = model.predict(X_pred)
+                        st.write("Placeholder for model call")
+                        y_pred = y_true # To be updated
+                    st.success("Prediction done!")
 
 
-                    # Building the y images
+                    # Building the images
                     y_true_image = y_true[..., 0]
                     y_pred_image = y_pred[..., 0]
+                    final_layer_true = np.clip(np.stack([r[..., 0]+y_true_image, g[..., 0], b[..., 0]], axis=2), 0, 1)
+                    final_layer_pred = np.clip(np.stack([r[..., 0]+y_true_image, g[..., 0], b[..., 0]], axis=2), 0, 1)
+
 
                     # Button to display the results
                     st.write("The model ran, let's look at the results 🥁🥁🥁")
@@ -206,120 +206,123 @@ if st.session_state['start_of_choice'] == "Go!":
                         # Displaying X_pred_image, the y_true mask and the combination of both
                         # fig = plot_results(input_image, y_true_image, y_pred_image)
                         # st.write(fig)
-                        plot_results_streamlit(input_image, y_true_image, y_pred_image)
+                        plot_results_streamlit(input_image, y_true_image, y_pred_image, final_layer_true, final_layer_pred)
 
                         # Returning the wager result
                         st.write("🤖:")
                         st.text("Sorry, looks like you just lost some cash 💸💸💸")
 
 
-        # Sequence if user chose NOT to bet
+        ############## Sequence if user chose NOT to bet ###############
 
-        if st.session_state['choice_of_bet'] == "No bet":
-            st.write("🤖:")
-            st.text("A bit of a coward hu? Let's go still")
-            # Loading the data
+    if st.session_state['choice_of_bet'] == "No bet":
+        st.write("🤖:")
+        st.text("A bit of a coward hu? Let's go still")
+
+        # Loading the data from the local files
+        st.markdown("***")
+        st.write("Now let's choose and build an image")
+        uploaded_files = st.file_uploader("Choose input images",
+                                type = ['npy'],
+                                accept_multiple_files=True)
+
+
+        # // Ideally wrap in a function somewhere
+        # Retrieving only the 3 bands we want and the true mask
+        if uploaded_files:
+            st.success("✅ Files loaded")
+
+            for uploaded_file in uploaded_files:
+                if uploaded_file.name == "band_11.npy":
+                    band11 = np.load(uploaded_file)
+                elif uploaded_file.name == "band_14.npy":
+                    band14 = np.load(uploaded_file)
+                elif uploaded_file.name == "band_15.npy":
+                    band15 = np.load(uploaded_file)
+                elif uploaded_file.name == "human_pixel_masks.npy":
+                    y_true = np.load(uploaded_file)
+
+
+            # Ideally put in params
+            # Defining bounds for each band and sequence
+            N_TIMES_BEFORE = 4
+            _T11_BOUNDS = (243, 303)
+            _CLOUD_TOP_TDIFF_BOUNDS = (-4, 5)
+            _TDIFF_BOUNDS = (-4, 2)
+
+
+            # Normalizing the selected image to plot it in RGB ash
+            r = normalize_range(band15 - band14, _TDIFF_BOUNDS)
+            g = normalize_range(band14 - band11, _CLOUD_TOP_TDIFF_BOUNDS)
+            b = normalize_range(band14, _T11_BOUNDS)
+            image_full_sequences = np.clip(np.stack([r, g, b], axis=2), 0, 1)
+
+
+            # Choosing only the 5th sequence to plot the image
+            input_image = image_full_sequences[..., N_TIMES_BEFORE]
+
+            # Artificially adding 1 dimension to feed to the model
+            X_pred = tf.expand_dims(input_image, 0)
+
+
+            # Displaying X_pred_image
             st.markdown("***")
-            st.write("Now let's choose and build an image")
-            uploaded_files = st.file_uploader("Choose input images",
-                                    type = ['npy'],
-                                    accept_multiple_files=True)
-
-            st.write(len(uploaded_files))
-
-            X_pred = 1
-            X_pred_image = 3
-            y_true_image = 2
+            st.write("Here is the challenge image, with enhanced colors to make it easier for you to see.")
+            st.write("Can you spot any contrails?")
+            fig = px.imshow(input_image)
+            # fig.update_layout(width=400, height=400)
+            st.plotly_chart(fig, use_container_width=True)
 
 
-
-            # Returning the wager result
+            # Button to go to the next_step
             st.write("🤖:")
-            st.text("Your were wise not to put your money on the line 🦾")
+            st.text("Should I have a go at it now?")
+            prediction_choice = st.radio("Prediction time!", ("Select", "Predict!", "We're still looking"))
+            st.session_state['prediction_start'] = prediction_choice
+
+            if st.session_state['prediction_start'] == "Predict!":
+                st.markdown("***")
+                with st.spinner('Prediction ongoing...'):
+                    # Model call API
+                    # Use a rolling thing to explain it is turning
+                    # Use a check when y_pred exists
+
+                    # Calling the model to launch a prediction
+                    # url = 'https://www.marinsetraine.com/stagiaire'
+                    # params = {}
+                    # model = requests.get(url, params=params)
+
+                    # y_pred = model.predict(X_pred)
+                    st.write("Placeholder for model call")
+                    y_pred = y_true # To be updated
+                st.success("Prediction done!")
 
 
+                # Building the images
+                y_true_image = y_true[..., 0]
+                y_pred_image = y_pred[..., 0]
+                final_layer_true = np.clip(np.stack([r[..., 0]+y_true_image, g[..., 0], b[..., 0]], axis=2), 0, 1)
+                final_layer_pred = np.clip(np.stack([r[..., 0]+y_true_image, g[..., 0], b[..., 0]], axis=2), 0, 1)
 
 
+                # Button to display the results
+                st.write("The model ran, let's look at the results 🥁🥁🥁")
+                result_display = st.radio("Display results?", ("Select", "Show us!", "Wait, it's scary"))
+                st.session_state['display_result'] = result_display
+                st.balloons()
+                st.markdown("***")
 
+                # Displaying the results
+                if st.session_state['display_result'] == "Show us!":
+                    # Displaying X_pred_image, the y_pred mask and the combination of both
+                    # Displaying X_pred_image, the y_true mask and the combination of both
+                    # fig = plot_results(input_image, y_true_image, y_pred_image)
+                    # st.write(fig)
+                    plot_results_streamlit(input_image, y_true_image, y_pred_image, final_layer_true, final_layer_pred)
 
-
-
-
-
-####################### For reference #######################
-
-
-# if started:
-#     st.write("🤖:")
-#     st.text("Hey there! You are challenging me apparently... How about a friendly wager?")
-#     bet_choice = st.selectbox("Bet or no bet?", ["Select", "Yes", "No"])
-#     if bet_choice == "Yes":
-#         st.session_state['choice_of_bet'] = "Yes"
-#         st.write(st.session_state['choice of_bet'])
-
-    # if st.session_state.bet_choice == "Yes":
-    #     st.session_state.bet_choice = choice_of_bet
-    #     st.write("🤖:")
-    #     st.text("Okay we're ooooon")
-    #     bet_amount = st.select_slider("Place your bet - We're talking € here:", list(range(1,101)), key='bet_amount')
-    #     if bet_amount:
-    #         st.session_state.bet_amount = bet_amount
-    # elif st.session_state.bet_choice == "No":
-    #     st.session_state.bet_choice = choice_of_bet
-    #     st.write("🤖:")
-    #     st.text("A bit of a coward hu? Let's go still")
-
-
-    # if bet_choice == "Yes":
-    #     # st.session_state.bet_choice = bet_choice
-    #     st.write("🤖:")
-    #     st.text("Okay we're ooooon")
-    #     bet_amount = st.select_slider("Place your bet - We're talking € here:", list(range(1,101)), key='bet_amount')
-    #     if bet_amount:
-    #         st.session_state.bet_amount = bet_amount
-    # elif bet_choice == "No":
-    #     # st.session_state.bet_choice = bet_choice
-    #     st.write("🤖:")
-    #     st.text("A bit of a coward hu? Let's go still")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# button_status_1 = st.button("Hello world", disabled=False)
-# st.write(f"Button status 1 is {button_status_1}")
-
-# button_status_2 = st.button("Say again", disabled=False)
-# st.write(f"Button status 2 is {button_status_2}")
-
-# checkbox_status = st.checkbox("Test check", disabled=False)
-# st.write(f"Checkbox status is {checkbox_status}")
-
-# st.radio("Test radio", ["1", "2", "3"])
-
-# st.selectbox("Test select box", ["1", "2", "3"])
-
-# st.multiselect("Test multi-select box", ["1", "2", "3"])
-
-# st.text_input("What do you want to do?")
-# st.text_input("Enter password", type="password")
-
-# with st.spinner("Loading ongoing"):
-#     f = st.file_uploader("Choose the input image",
-#                      type = ['npy'],
-#                      accept_multiple_files=True)
-# if f is not None:
-#     image = getvalue(f)
-#     predict on image
+                    # Returning the wager result
+                    st.write("🤖:")
+                    st.text("Your were wise not to put your money on the line 🦾")
 
 
 
