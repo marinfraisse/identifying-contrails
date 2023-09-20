@@ -21,11 +21,11 @@ st.set_page_config(
 
 show_pages(
     [
-        Page("/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/id_contrail_app_home.py", "Context & objectives", "🎯"),
-        Page("/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/pages/1_Process.py", "Our methodology and process", "🥼"),
-        Page("/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/pages/2_Contrail_gallery.py", "Contrail Gallery", "📷"),
-        Page("/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/pages/3_Model_demo.py", "Model demo - Spot the difference", "🔍"),
-        Page("/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/pages/4_About_us.py", "About us", "🚀"),
+        Page(os.path.join(os.path.dirname(__file__), "id_contrail_app_home.py"), "Context & objectives", "🎯"),
+        Page(os.path.join(os.path.dirname(__file__), "pages" ,"1_Process.py"), "Our methodology and process", "🥼"),
+        Page(os.path.join(os.path.dirname(__file__), "pages" ,"2_Contrail_gallery.py"), "Contrail Gallery", "📷"),
+        Page(os.path.join(os.path.dirname(__file__), "pages" ,"3_Model_demo.py"), "Model demo - Spot the difference", "🔍"),
+        Page(os.path.join(os.path.dirname(__file__), "pages" ,"4_About_us.py"), "About us", "🚀"),
     ]
 )
 
