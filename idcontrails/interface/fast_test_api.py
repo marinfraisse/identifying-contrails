@@ -1,7 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Request, Response
-# from typing import Annotated
-# from pydantic import BaseModel
-# import numpy as np
+from fastapi import FastAPI, File, UploadFile, Response
 from idcontrails.ml_logic.building_models import load_model
 
 import numpy as np

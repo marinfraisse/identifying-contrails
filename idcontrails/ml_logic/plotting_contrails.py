@@ -1,5 +1,4 @@
 # Choosing a random image from sampling set and defining the corresponding true mask and predicted mask
-import random
 import tensorflow as tf
 import numpy as np
 import os

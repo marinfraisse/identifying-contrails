@@ -1,32 +1,5 @@
-# imports
-import os
-import random
-import datetime
-import csv
-
-# Data analysis and manipulation
-import numpy as np
-
-# # Data visualization
-# from matplotlib import animation
-# import matplotlib.pyplot as plt
-# from IPython import display
-# import seaborn as sns
-# import plotly
-
-# ML, DL & Modelling
 import tensorflow as tf
-from tensorflow import keras
-# from tensorflow.keras import callbacks
-# from tensorflow.keras.models import Sequential
-
-# Garbage collect for generator
-import gc
-import random
-
-#import parameters
 from idcontrails.params import *
-
 from idcontrails.ml_logic.metrics import dice_metric, dice_loss, binary_crossentropy
 
 
