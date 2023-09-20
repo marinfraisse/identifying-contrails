@@ -3,7 +3,7 @@ import os
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-from idcontrails.user_interface.app_processing import *
+from app_processing import *
 from st_pages import Page, show_pages
 
 # Creating the absolute path for assets
