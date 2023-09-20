@@ -20,4 +20,3 @@ opencv-python
 plotly
 streamlit
 st_pages
-os
