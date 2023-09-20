@@ -22,7 +22,7 @@ from tensorflow.keras import layers, callbacks
 from tensorflow.keras.models import Sequential
 
 # Garbage collect for generator
-import gc
+# import gc
 import random
 
 #import parameters
