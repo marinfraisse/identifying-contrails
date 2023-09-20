@@ -1,18 +1,18 @@
 # imports
 import os
-import random
-import datetime
-import csv
+# import random
+# import datetime
+# import csv
 
 # Data analysis and manipulation
 import numpy as np
-import pandas as pd
+# import pandas as pd
 
 # Data visualization
-from matplotlib import animation
+# from matplotlib import animation
 import matplotlib.pyplot as plt
-from IPython import display
-import seaborn as sns
+# from IPython import display
+# import seaborn as sns
 # import plotly
 
 # ML, DL & Modelling
@@ -22,10 +22,10 @@ from tensorflow import keras
 # from tensorflow.keras.models import Sequential
 
 # Garbage collect for generator
-import gc
-import random
+# import gc
+# import random
 import requests
-import json
+# import json
 #import parameters
 from idcontrails.params import *
 from idcontrails.ml_logic.building_models import load_model
