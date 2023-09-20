@@ -3,7 +3,7 @@ import random
 import tensorflow as tf
 import numpy as np
 import os
-from idcontrails.params import *
+from params import *
 import matplotlib.pyplot as plt
 import streamlit as st
 import plotly.express as px
