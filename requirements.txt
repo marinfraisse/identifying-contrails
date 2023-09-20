@@ -17,4 +17,3 @@ typing
 python-multipart
 requests
 opencv-python
-PIL
