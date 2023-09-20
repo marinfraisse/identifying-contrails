@@ -18,8 +18,8 @@ import seaborn as sns
 # ML, DL & Modelling
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers, callbacks
-from tensorflow.keras.models import Sequential
+# from tensorflow.keras import layers, callbacks
+# from tensorflow.keras.models import Sequential
 
 # Garbage collect for generator
 import gc
