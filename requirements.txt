@@ -20,4 +20,4 @@ opencv-python
 plotly
 streamlit
 st_pages
-idcontrails @ git+https://github.com/marinfraisse/identifying-contrails/idcontrail.git
+git+https://github.com/marinfraisse/identifying-contrails/idcontrail.git
