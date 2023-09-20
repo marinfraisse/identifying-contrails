@@ -20,7 +20,8 @@ st.set_page_config(
 
 
 # Creating the absolute path for assets
-absolute_path_root = '/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/app_assets'
+absolute_path_root_old = '/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/app_assets'
+absolute_path_root = os.path.join(os.path.dirname(__file__), "../","app_assets" )
 
 
 ########################################################## Contrail gallery ##########################################################
