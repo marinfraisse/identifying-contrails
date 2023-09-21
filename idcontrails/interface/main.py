@@ -52,20 +52,17 @@ if TEST_PLOT :
         print(nom + ' successfully saved')
 
 
+def api_call_predict(X) :
+    X_bytes = X.tobytes()
+    result = requests.post(url3 + "/upload_image/", files= {"img" : X_bytes} )
+    print(f"status_code is : {result.status_code}")
+    X_mask_pred = np.frombuffer(result.content, dtype = np.float32).reshape(256,256,1)
+    return X_mask_pred
+
+
 if TEST_API :
     X = loading_single_array(index=1)
-    print(X)
-    print(X.shape)
-    X_test = X.tobytes()
-    result = requests.post(url3 + "/upload_image/", files= {"img" : X_test} )
-    print(result.status_code)
-
-
-    X_mask_pred = np.frombuffer(result.content, dtype = np.float32).reshape(256,256,1)
-    print(X_mask_pred.sum())
-
-
-
+    print(api_call_predict(X))
 
 
 
