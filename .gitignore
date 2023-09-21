@@ -6,3 +6,4 @@ model_checkpoints/
 dataset_sample/
 __pycache__/
 laurent_barre/
+*.pyc
