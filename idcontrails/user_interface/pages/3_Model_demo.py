@@ -9,8 +9,9 @@ import requests
 import tempfile
 
 from app_processing import *
-from idcontrails.ml_logic.plotting_contrails import plot_results, plot_results_streamlit
-from idcontrails.interface.main import api_call_predict
+from idcontrails.ml_logic.plotting_contrails import plot_results_streamlit
+from idcontrails.interface.api_call import api_call_predict
+
 
 
 # Set some pre-defined configurations for the page, such as the page title, logo-icon, page loading state (whether the page is loaded automatically or you need to perform some action for loading)
