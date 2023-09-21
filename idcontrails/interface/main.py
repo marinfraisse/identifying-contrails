@@ -33,6 +33,8 @@ from idcontrails.ml_logic.metrics import dice_metric, dice_loss, binary_crossent
 
 from idcontrails.ml_logic.preprocessing import create_list_samples_with_contrails, loading_single_array
 from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, plot_results
+from idcontrails.interface.api_call import api_call_predict
+
 
 url = 'http://127.0.0.1:8000'
 url2 = 'http://127.0.0.1:8080'
@@ -52,13 +54,6 @@ url3 = 'https://contrails-2pojbkqtxa-ew.a.run.app'
 #         plt.savefig(os.path.join(FIG_SAVES_PATH, nom ))
 #         print(nom + ' successfully saved')
 
-
-def api_call_predict(X) :
-    X_bytes = X.tobytes()
-    result = requests.post(url3 + "/upload_image/", files= {"img" : X_bytes} )
-    print(f"status_code is : {result.status_code}")
-    X_mask_pred = np.frombuffer(result.content, dtype = np.float32).reshape(256,256,1)
-    return X_mask_pred
 
 
 if TEST_API :

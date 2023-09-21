@@ -17,10 +17,8 @@ async def receive_image(img: UploadFile=File(...)):
     X_api = np.frombuffer(contents, dtype = np.float32).reshape(256,256,3)
     X_api = np.expand_dims(X_api , axis=0)
     X_mask = model.predict(X_api)
-
     print(X_mask.shape)
     X_final = X_mask.tobytes()
-
     return Response(content=X_final)
 
 # Define a root `/` endpoint
