@@ -7,7 +7,7 @@ from app_processing import *
 
 # Creating the absolute path for assets
 absolute_path_root_old = '/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/app_assets'
-absolute_path_root = os.path.join(os.path.dirname(__file__), "../","app_assets" )
+absolute_path_root = os.path.join(os.path.dirname(__file__), "../", "app_assets")
 
 # Set some pre-defined configurations for the page, such as the page title, logo-icon, page loading state (whether the page is loaded automatically or you need to perform some action for loading)
 st.set_page_config(
