@@ -36,10 +36,6 @@ from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, 
 from idcontrails.interface.api_call import api_call_predict
 
 
-url = 'http://127.0.0.1:8000'
-url2 = 'http://127.0.0.1:8080'
-url3 = 'https://contrails-2pojbkqtxa-ew.a.run.app'
-
 # creating model architecture
 # if RELOAD_MODEL :
 #     model = load_model()
@@ -56,6 +52,7 @@ url3 = 'https://contrails-2pojbkqtxa-ew.a.run.app'
 
 
 
-if TEST_API :
-    X = loading_single_array(index=1)
-    print(api_call_predict(X))
+# if TEST_API :
+#     X = loading_single_array(index=1)
+#     print(api_call_predict(X))
+#     print(api_call_predict(X).shape)
