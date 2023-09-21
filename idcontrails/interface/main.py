@@ -36,7 +36,7 @@ from idcontrails.ml_logic.plotting_contrails import load_random_image_and_mask, 
 
 url = 'http://127.0.0.1:8000'
 url2 = 'http://127.0.0.1:8080'
-
+url3 = 'https://contrails-2pojbkqtxa-ew.a.run.app'
 # creating model architecture
 if RELOAD_MODEL :
     model = load_model()
@@ -52,20 +52,17 @@ if TEST_PLOT :
         print(nom + ' successfully saved')
 
 
-if TEST_API :
-    X = loading_single_array(index=0)
-    print(X)
-    print(X.shape)
-    X_test = X.tobytes()
-    result = requests.post(url2 + "/upload_image/", files= {"img" : X_test} )
-    print(result.status_code)
-
-
+def api_call_predict(X) :
+    X_bytes = X.tobytes()
+    result = requests.post(url3 + "/upload_image/", files= {"img" : X_bytes} )
+    print(f"status_code is : {result.status_code}")
     X_mask_pred = np.frombuffer(result.content, dtype = np.float32).reshape(256,256,1)
-    print(X_mask_pred.sum())
+    return X_mask_pred
 
 
-
+if TEST_API :
+    X = loading_single_array(index=1)
+    print(api_call_predict(X))
 
 
 
