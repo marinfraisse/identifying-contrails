@@ -2,6 +2,9 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import streamlit as st
+import plotly.express as px
+import plotly.graph_objects as go
 
 N_TIMES_BEFORE = 4
 
@@ -75,38 +78,48 @@ def pred_debile(index):
 
     return X_pred_image, y_pred_image, y_true_image
 
+def plot_results_streamlit(input_image, y_true_image, y_pred_image, final_layer_true, final_layer_pred):
+
+    # Preparing the superpositioned masks
+
+    # Building the layout with 3 columns
+    col_1, col_2,col_3 = st.columns(3)
+
+    # Displaying images in each column
+    with col_1:
+        fig_1 = px.imshow(input_image)
+        fig_1.update_layout(width=300, height=300)
+        st.text(f'Original image')
+        st.plotly_chart(fig_1, width=300, height=300)
+        st.markdown("***")
+        fig_2 = px.imshow(input_image)
+        fig_2.update_layout(width=300, height=300)
+        st.text(f'Original image')
+        st.plotly_chart(fig_1, width=300, height=300)
+
+    with col_2:
+        fig_3 = px.imshow(y_true_image)
+        fig_3.update_layout(width=300, height=300)
+        fig_3.update(layout_coloraxis_showscale=False)
+        st.text(f'Original contrail mask')
+        st.plotly_chart(fig_3, width=300, height=300)
+        st.markdown("***")
+        fig_4 = px.imshow(y_pred_image)
+        fig_4.update_layout(width=300, height=300)
+        fig_4.update(layout_coloraxis_showscale=False)
+        st.text(f'Your prediction mask')
+        st.plotly_chart(fig_4, width=300, height=300)
 
 
-
-
-
-
-# # plotting the results on a graph
-
-# plt.figure(figsize=(18, 6))
-# ax = plt.subplot(2, 3, 1)
-# ax.imshow(input_image)
-# ax.set_title('Input image')
-
-# ax = plt.subplot(2, 3, 2)
-# ax.imshow(y_true, interpolation='none')
-# ax.set_title('Contrail mask from validation set')
-
-# ax = plt.subplot(2, 3, 3)
-# ax.imshow(input_image)
-# ax.imshow(y_true, cmap='Reds', alpha=.4, interpolation='none')
-# ax.set_title('Contrail mask on input image')
-
-# plt.figure(figsize=(18, 6))
-# ax = plt.subplot(2, 3, 4)
-# ax.imshow(input_image)
-# ax.set_title('Input image')
-
-# ax = plt.subplot(2, 3, 5)
-# ax.imshow(y_pred_image, interpolation='none')
-# ax.set_title('Predicted contrail mask using model')
-
-# ax = plt.subplot(2, 3, 6)
-# ax.imshow(input_image)
-# ax.imshow(y_pred_image, cmap='Reds', alpha=.4, interpolation='none')
-# ax.set_title('Predicted contrail mask on input image');
+    with col_3:
+        fig_5 = px.imshow(final_layer_true)
+        fig_5.update_layout(width=300, height=300)
+        # fig_5.update(layout_coloraxis_showscale=False)
+        st.text(f'Final layer true')
+        st.plotly_chart(fig_5, width=300, height=300)
+        st.markdown("***")
+        fig_6 = px.imshow(final_layer_pred)
+        fig_6.update_layout(width=300, height=300)
+        # fig_6.update(layout_coloraxis_showscale=False)
+        st.text(f'Predicted final layer')
+        st.plotly_chart(fig_6, width=300, height=300)

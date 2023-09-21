@@ -26,6 +26,7 @@ show_pages(
         Page(os.path.join(os.path.dirname(__file__), "pages" ,"2_Contrail_gallery.py"), "Contrail Gallery", "📷"),
         Page(os.path.join(os.path.dirname(__file__), "pages" ,"3_Model_demo.py"), "Model demo - Spot the difference", "🔍"),
         Page(os.path.join(os.path.dirname(__file__), "pages" ,"4_About_us.py"), "About us", "🚀"),
+        Page(os.path.join(os.path.dirname(__file__), "pages" ,"5_Surprise.py"), "One last gift", "🎁")
     ]
 )
 
