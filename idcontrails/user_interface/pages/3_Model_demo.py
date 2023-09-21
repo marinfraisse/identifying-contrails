@@ -7,7 +7,7 @@ from IPython import display
 import plotly.express as px
 import requests
 import tempfile
-from idcontrails.user_interface.app_processing import *
+from app_processing import *
 from idcontrails.ml_logic.plotting_contrails import plot_results, plot_results_streamlit
 
 

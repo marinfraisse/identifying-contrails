@@ -3,7 +3,7 @@ import os
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-from idcontrails.user_interface.app_processing import *
+from app_processing import *
 
 # Creating the absolute path for assets
 absolute_path_root_old = '/home/nberretti/code/marinfraisse/identifying-contrails/idcontrails/user_interface/app_assets'
