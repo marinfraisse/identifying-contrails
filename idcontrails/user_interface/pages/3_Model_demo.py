@@ -9,7 +9,6 @@ import requests
 import tempfile
 
 from app_processing import *
-from idcontrails.ml_logic.plotting_contrails import plot_results_streamlit
 from idcontrails.interface.api_call import api_call_predict
 
 
