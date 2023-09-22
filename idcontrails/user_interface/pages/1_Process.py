@@ -28,15 +28,15 @@ st.subheader('Presenting the dataset')
 
 st.write("We used a dataset composed of 2 subsets of data")
 st.markdown("""
-            - Contrail images: original satellite images on which we trained our model to identify contrails
+            - Contrail images: original satellite images (256x256x8) on which we trained our model to identify contrails
             - Labeled contrails : binary mask derived from original satelite images based on 4+ different labelers annotating each image, 1 if a pixel displayed contrails and 0 if the image did not display contrails. This labeled image is called the 'Ground truth'
             """)
-st.image(os.path.join(absolute_path_root,'false_color_and_mask.png'), caption='Original satellite image on the left, labeled contrail on the right, Marin doing kitesurf in the middle')
+st.image(os.path.join(absolute_path_root,'false_color_and_mask.png'), caption='Normalized satellite image on the left, labeled contrail on the right')
 
 st.subheader('Preprocessing')
 st.write('We normalized the images in order to vizualize contrails properly, using an "ash" color scheme - originally developed for viewing volcanic ash in the atmosphere and also useful to view contrails which appear in dark blue (see image above)')
 
-st.write('The normalization function is an idea we came up with during a heated brainstorming session mobilizing all of Fraisse Inc. staff for hours - Just kidding we used the methodology developed in the following scientific paper (p.7)')
+st.write('The normalization function is an idea we came up with during a heated brainstorming session mobilizing all of Fraisse Inc. staff for hours - Just kidding we used the methodology developed in the following [scientific paper](https://eumetrain.org/sites/default/files/2020-05/RGB_recipes.pdf) (p.7)')
 
 st.markdown("***")
 
@@ -107,14 +107,27 @@ def dice_metric(y_true, y_pred):
     dice = (2. * intersection + smooth) / (union + smooth)
     return dice
 '''
+
+code_5 = '''
+# Defining the dice loss
+def dice_loss(y_true, y_pred):
+    smooth = 1e-5
+    y_true_sum = tf.reduce_sum(y_true)
+    y_pred_sum = tf.reduce_sum(y_pred)
+    intersection = tf.reduce_sum(y_true * y_pred)
+    union = y_true_sum + y_pred_sum
+    dice = (2. * intersection + smooth) / (union + smooth)
+    return 1 - dice
+'''
 st.code(code_3, language="python")
+st.code(code_5, language="python")
 
 st.subheader('Model architecture')
 st.write("Finally we chose a U-Net model which is very efficient for image segmentation task. This model's architecture is composed of 4 layers")
 st.markdown("""
-            1. Encoder: mulitple layers of CNN responsible for learning features in the input image. these layers reduce the image dimension (max-pooling) and increase the number of channels
-            2. Bottleneck: last CNN layer without maxpooling to keep the same image size and extract the deepest features from the image
-            3. Decoder: counterpart to the encoder - uses transposed CNN to increase the image size. Additional concatenation step to combine the features map learned from the encoder with the upsampled feature map from the decoder
+            1. Encoder: mulitple layers of CNN responsible for learning features in the input image. these layers reduce the image dimension (maxpooling) while increasing the number of channels
+            2. Bottleneck: last CNN layer without maxpooling to keep the same image size and extract the most detailed features from the image
+            3. Decoder: counterpart to the encoder - uses transposed CNN to expand the image size. This is combined with a concatenation step to bring back information learned with the encoder and make sure we don't lose info while expanding the image
             4. Output layer: single CNN with a sigmoid activation function to output a binary mask
             """)
 st.image(os.path.join(absolute_path_root,'Unet_model.webp'))
