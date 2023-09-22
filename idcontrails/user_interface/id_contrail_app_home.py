@@ -55,7 +55,7 @@ st.write("")
 col_1, col_2, col_3 = st.columns(3)
 
 with col_1:
-    st.image(os.path.join(absolute_path_root, 'contrails_left_to_right.jpg'), caption="Plane fart")
+    st.image(os.path.join(absolute_path_root, 'contrails_left_to_right.jpg'), caption="Typical contrail")
 
 with col_2:
     st.image(os.path.join(absolute_path_root, 'sunset_contrails.jpg'), caption="A beautiful danger")
