@@ -56,7 +56,8 @@ for i in range(0, NB_CHUNCKS):
     list_chuncks.append(chunk_i_records)
 chuncks_record_dict = dict(zip(chunck_names, list_chuncks))
 '''
-st.code(code, language="python")
+with st.expander("Expand to see detailed code for splitting data in chunks"):
+    st.code(code, language="python")
 
 code_2 = '''
 # Defining a function to load chunks
@@ -87,7 +88,8 @@ def load_normalize_X_chunck(chunck, BASE_DIR, band_choice, N_TIMES_BEFORE):
     X_chunck_array = np.stack(X_chunck, axis=0)
     return X_chunck_array
 '''
-st.code(code_2, language="python")
+with st.expander("Expand to see detailed code for training with chunks"):
+    st.code(code_2, language="python")
 
 st.subheader('Defining a custom loss and performance metric')
 st.write("For this project we had to optimize the Dice metric, which measures the proportion of well predicted contrails within the set of total contrails")
@@ -119,8 +121,10 @@ def dice_loss(y_true, y_pred):
     dice = (2. * intersection + smooth) / (union + smooth)
     return 1 - dice
 '''
-st.code(code_3, language="python")
-st.code(code_5, language="python")
+with st.expander("Expand to see detailed code for dice metric"):
+    st.code(code_3, language="python")
+with st.expander("Expand to see detailed code for dice loss"):
+    st.code(code_5, language="python")
 
 st.subheader('Model architecture')
 st.write("Finally we chose a U-Net model which is very efficient for image segmentation task. This model's architecture is composed of 4 layers")
@@ -189,10 +193,11 @@ def build_model(input_layer, start_neurons, drop_out_factor):
     return output_layer
 '''
 
-st.code(code_4, language="python")
+with st.expander("Expand to see detailed code for U-Net model"):
+    st.code(code_4, language="python")
 
 st.subheader('Performance and limitations')
-st.write("We achieve a performance of 0.57 with our U-Net model, meaning that 57% of all contrails are predicted correctly. We could explore additional methods to increase our model performance notably combining our dice loss with a weighted binary-crossentropy loss, increasing the number of channels fed to the model (e.g. 10 vs 3 for our current model) or exploring other models like a MaskRCNN")
+st.write("We achieve a performance of 0.57 for the Dice metric with our U-Net model, meaning that approximately 60% of all contrails were predicted correctly. We could explore additional methods to increase our model performance notably combining our dice loss with a weighted binary-crossentropy loss, increasing the number of channels fed to the model (e.g. 10 vs 3 for our current model) or exploring other models like a MaskRCNN")
 
 # Ending line
 st.markdown("***")
