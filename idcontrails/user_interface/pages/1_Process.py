@@ -38,6 +38,42 @@ st.write('We normalized the images in order to vizualize contrails properly, usi
 
 st.write('The normalization function is an idea we came up with during a heated brainstorming session mobilizing all of Fraisse Inc. staff for hours - Just kidding we used the methodology developed in the following [scientific paper](https://eumetrain.org/sites/default/files/2020-05/RGB_recipes.pdf) (p.7)')
 
+st.subheader('Defining a custom loss and performance metric')
+st.write("For this project we had to optimize the Dice metric, which measures the proportion of well predicted contrails within the set of total contrails")
+st.latex(r'\text{Dice}(X, Y) = \frac{2 \cdot |X \cap Y|}{|X| + |Y|}')
+st.write("")
+st.write("We also built a custom loss function which we called the Dice loss, based on the same formula as the Dice metric")
+code_3 = '''
+# Defining the dice metric
+def dice_metric(y_true, y_pred):
+    y_pred = proba_to_pixel(y_pred)
+    y_true = proba_to_pixel(y_true)
+    smooth = 1e-5
+    y_true_sum = tf.reduce_sum(y_true)
+    y_pred_sum = tf.reduce_sum(y_pred)
+    intersection = tf.reduce_sum(y_true * y_pred)
+    union = y_true_sum + y_pred_sum
+    dice = (2. * intersection + smooth) / (union + smooth)
+    return dice
+'''
+
+code_5 = '''
+# Defining the dice loss
+def dice_loss(y_true, y_pred):
+    smooth = 1e-5
+    y_true_sum = tf.reduce_sum(y_true)
+    y_pred_sum = tf.reduce_sum(y_pred)
+    intersection = tf.reduce_sum(y_true * y_pred)
+    union = y_true_sum + y_pred_sum
+    dice = (2. * intersection + smooth) / (union + smooth)
+    return 1 - dice
+'''
+
+with st.expander("Expand to see detailed code for dice metric"):
+    st.code(code_3, language="python")
+with st.expander("Expand to see detailed code for dice loss"):
+    st.code(code_5, language="python")
+
 st.markdown("***")
 
 st.header('Our Model')
@@ -90,41 +126,6 @@ def load_normalize_X_chunck(chunck, BASE_DIR, band_choice, N_TIMES_BEFORE):
 '''
 with st.expander("Expand to see detailed code for training with chunks"):
     st.code(code_2, language="python")
-
-st.subheader('Defining a custom loss and performance metric')
-st.write("For this project we had to optimize the Dice metric, which measures the proportion of well predicted contrails within the set of total contrails")
-st.latex(r'\text{Dice}(X, Y) = \frac{2 \cdot |X \cap Y|}{|X| + |Y|}')
-st.write("")
-st.write("We also built a custom loss function which we called the Dice loss, based on the same formula as the Dice metric")
-code_3 = '''
-# Defining the dice metric
-def dice_metric(y_true, y_pred):
-    y_pred = proba_to_pixel(y_pred)
-    y_true = proba_to_pixel(y_true)
-    smooth = 1e-5
-    y_true_sum = tf.reduce_sum(y_true)
-    y_pred_sum = tf.reduce_sum(y_pred)
-    intersection = tf.reduce_sum(y_true * y_pred)
-    union = y_true_sum + y_pred_sum
-    dice = (2. * intersection + smooth) / (union + smooth)
-    return dice
-'''
-
-code_5 = '''
-# Defining the dice loss
-def dice_loss(y_true, y_pred):
-    smooth = 1e-5
-    y_true_sum = tf.reduce_sum(y_true)
-    y_pred_sum = tf.reduce_sum(y_pred)
-    intersection = tf.reduce_sum(y_true * y_pred)
-    union = y_true_sum + y_pred_sum
-    dice = (2. * intersection + smooth) / (union + smooth)
-    return 1 - dice
-'''
-with st.expander("Expand to see detailed code for dice metric"):
-    st.code(code_3, language="python")
-with st.expander("Expand to see detailed code for dice loss"):
-    st.code(code_5, language="python")
 
 st.subheader('Model architecture')
 st.write("Finally we chose a U-Net model which is very efficient for image segmentation task. This model's architecture is composed of 4 layers")
