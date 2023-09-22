@@ -32,7 +32,7 @@ if 'troll_choice' not in st.session_state:
     st.session_state['troll_choice'] = "Nothing"
 
 st.subheader("Which output do you want to see?")
-choice_of_troll = st.radio("Choose your version", ("Select", "Version 1", "Version 2", "Version 3"))
+choice_of_troll = st.radio("Choose your version", ("Select", "Version 1", "Version 2", "Version 3", "Version 4"))
 st.session_state['troll_choice'] = choice_of_troll
 
 if st.session_state['troll_choice'] == "Version 1":
@@ -53,6 +53,11 @@ elif st.session_state['troll_choice'] == "Version 3":
     # st.plotly_chart(fig, use_container_width=True)
     st.image(troll_image, caption="ContrAI")
 
+elif st.session_state['troll_choice'] == "Version 4":
+    troll_video = "https://www.youtube.com/watch?v=BBJa32lCaaY"
+    # fig = px.imshow(troll_image)
+    # st.plotly_chart(fig, use_container_width=True)
+    st.video(troll_video, )
 
 
 st.markdown("***")
